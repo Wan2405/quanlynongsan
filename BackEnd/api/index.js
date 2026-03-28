@@ -20,6 +20,15 @@ const initializeOnce = async () => {
 };
 
 module.exports = async (req, res) => {
-  await initializeOnce();
+  try {
+    await initializeOnce();
+  } catch (error) {
+    return res.status(500).json({
+      status: 'error',
+      message: 'Khởi tạo backend thất bại trên Vercel.',
+      detail: error?.message || 'Lỗi không xác định',
+    });
+  }
+
   return app(req, res);
 };
